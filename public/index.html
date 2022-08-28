@@ -43,11 +43,10 @@
                 <img class="rounded-t-lg" src="./images/proflie.jpg" alt=""/>
               </a>
               <div class="p-6">
-                <h5 class="text-gray-900 text-xl font-medium mb-2">I'm pancake</h5>
-                <p class="text-gray-700 text-base mb-4">
-                  Zzz.Zzz 
-                </p>
-                <button type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Button</button>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="info_Name"></h5>
+                <p class="text-gray-700 text-base mb-4" id="info_ID"></p>
+                <p class="text-gray-700 text-base mb-4" id="info_GPA"></p>
+                <p class="text-gray-700 text-base mb-4" id="info_Pos"></p>
               </div>
             </div>
           </div>
@@ -81,7 +80,7 @@
                headers: { 
                  'Content-Type': 'application/json',
                  "Accepts": "application/json",
-                 "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjU5MDEwMTg2LCJleHAiOjE2NTkwMTM3ODYsIm5iZiI6MTY1OTAxMDE4NiwianRpIjoiSUlzakxqNWJLRWNkZWp5TSIsInN1YiI6NjYsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.nkD0yCZRJREwqA3jIf7eTTdGfhvYTwr5qtBBieUZDV8 ",
+                 "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjYxNjY5OTExLCJleHAiOjE2NjE2NzM1MTEsIm5iZiI6MTY2MTY2OTkxMSwianRpIjoieVV3Y1lhVGxoV0JOcHJoNCIsInN1YiI6NjYsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.8cs1GTLpe9F26dWVBK6XTcwqy7MtJmLnycvxUJS1WA8 ",
                },
                success: function(data){
                  console.log(data);
@@ -239,7 +238,7 @@
           //elementButtonSave.setAttribute("class","tealA400");
           
          
-          elementButtonSave.setAttribute("onclick","popupConfirm('"+items[i].fullname+"',this)");
+          elementButtonSave.setAttribute("onclick","studentInfo('"+items[i].student_id+"',this)");
           
   
           cell5.appendChild(elementButtonSave);
@@ -253,8 +252,26 @@
       myTableDiv.appendChild(table);
     }
   
-    function popupConfirm(fullname,objElement){
-      alert(fullname);
+    function studentInfo(student_id){
+             // url from where we want to get the data
+             $.ajax({
+               method: "GET",
+               url: "https://tools.ecpe.nu.ac.th/network/api/student/"+student_id,
+               dataType : 'json',
+               headers: { 
+                 'Content-Type': 'application/json',
+                 "Accepts": "application/json",
+                 "Authorization": `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjYxNjY5OTExLCJleHAiOjE2NjE2NzM1MTEsIm5iZiI6MTY2MTY2OTkxMSwianRpIjoieVV3Y1lhVGxoV0JOcHJoNCIsInN1YiI6NjYsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.8cs1GTLpe9F26dWVBK6XTcwqy7MtJmLnycvxUJS1WA8`,
+               },
+               success: function(data){
+                 console.log(data);
+                 document.getElementById("info_Name").innerHTML = "Name : "+data[0].fullname;
+                 document.getElementById("info_ID").innerHTML = "Student ID : "+data[0].student_id;
+                 document.getElementById("info_GPA").innerHTML = "GPA : "+data[0].gpa;
+                 document.getElementById("info_Pos").innerHTML = "Position : "+data[0].position;
+                 $("#tabs").tabs("option","active",2)
+               }
+             });
     }
   </script>
 
